@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: elephant
+  threads:
+    virtual:
+      enabled: true
+logging:
+  level:
+    io.micrometer.core.instrument.logging: INFO
