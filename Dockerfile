@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/root/.m2 bash -lc 'mvn -s /usr/share/maven/conf/s
 ############################################
 # Runtime stage: run on JRE
 ############################################
-FROM dockerhub.xiz.im/ubuntu/jre:21-24.04_stable
+FROM dhub.kubesre.xyz/ubuntu/jre:21-24.04_stable
 WORKDIR /app
 
 # Copy the normalized application jar
