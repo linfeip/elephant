@@ -17,6 +17,10 @@ public class Metrics {
         Timer.builder("action_run_duration_seconds")
                 .description("action run duration in seconds")
                 .serviceLevelObjectives(
+                        Duration.ofMillis(1),
+                        Duration.ofMillis(3),
+                        Duration.ofMillis(5),
+                        Duration.ofMillis(7),
                         Duration.ofMillis(10),
                         Duration.ofMillis(20),
                         Duration.ofMillis(50),
