@@ -22,6 +22,8 @@ public class StatResponse {
 
         private Long count;
 
+        private String avg;
+
         private Integer qps;
     }
 }

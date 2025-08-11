@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 
 @RestController
@@ -42,6 +43,10 @@ public class MetricsController {
             var p99 = getPercentileMillis(s, 0.99);
 
             var count = timer.count();
+            // 一个的耗时
+            var perNano = (long) timer.totalTime(TimeUnit.NANOSECONDS) / count;
+            var qps = 1E9 / perNano;
+            var avg = Duration.ofNanos((long) timer.mean(TimeUnit.NANOSECONDS));
 
             var item = new StatResponse.StatItem();
             item.setName(comment);
@@ -49,6 +54,7 @@ public class MetricsController {
             item.setP90(p90.toString());
             item.setP99(p99.toString());
             item.setCount(count);
+            item.setAvg(avg.toString());
             item.setQps(0);
 
             rsp.getItems().add(item);
