@@ -32,7 +32,7 @@ class ElephantApplicationTests {
                 }
                 """;
         action0.delay = Duration.ofSeconds(1);
-        action0.timeout = 5;
+        action0.timeout = Duration.ofSeconds(15);
         action0.comment = "GetXXX";
         action0.loop = 5;
 
@@ -46,7 +46,7 @@ class ElephantApplicationTests {
                 }
                 """;
         action1.delay = Duration.ofSeconds(1);
-        action1.timeout = 5;
+        action1.timeout = Duration.ofSeconds(15);
         action1.comment = "PostXXX";
         action1.loop = 5;
 
@@ -55,8 +55,9 @@ class ElephantApplicationTests {
         var robot = new RunRequest.Robot();
         robot.num = 10_000;
 
-        var config = new RunRequest(actions, robot);
-
+        var config = new RunRequest();
+        config.setActions(actions);
+        config.setRobot(robot);
 
         var latch = new CountDownLatch(1);
         runnerManager.runAsync(config, latch::countDown);

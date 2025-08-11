@@ -6,7 +6,10 @@ import com.linfp.elephant.metrics.Metrics;
 import com.linfp.elephant.robot.ActionData;
 import com.linfp.elephant.robot.IAction;
 import com.linfp.elephant.robot.Robot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +18,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.function.Function;
 
 public class LocalRunner implements IRunner {
+    private static final Logger logger = LoggerFactory.getLogger(LocalRunner.class);
 
     private final Map<String, Function<ActionData, IAction>> actionFactory;
 
@@ -32,10 +36,11 @@ public class LocalRunner implements IRunner {
 
     @Override
     public void run(RunRequest config) {
+        logger.info("starting run");
         // 将配置中的Actions, 转成程序中的任务Actions
-        List<IAction> actions = new ArrayList<>(config.actions().size());
+        List<IAction> actions = new ArrayList<>(config.getActions().size());
         var curStep = 0;
-        for (var act : config.actions()) {
+        for (var act : config.getActions()) {
             var makeFn = actionFactory.get(act.action);
             if (makeFn == null) {
                 throw new RuntimeException("Unknown action: " + act.action);
@@ -51,7 +56,8 @@ public class LocalRunner implements IRunner {
         }
 
         // 构建Robot, Robot独立运行所有任务Actions
-        var robot = config.robot();
+        var robot = config.getRobot();
+        var start = System.nanoTime();
         var latch = new CountDownLatch(robot.num);
 
         for (var i = 0; i < robot.num; i++) {
@@ -65,6 +71,9 @@ public class LocalRunner implements IRunner {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        var elapsed = System.nanoTime() - start;
+        logger.info("finished run elapsed time: {}", Duration.ofNanos(elapsed));
     }
 
     @Override
@@ -72,6 +81,15 @@ public class LocalRunner implements IRunner {
         for (var t : robots) {
             t.shutdown();
         }
+
+        Thread.startVirtualThread(() -> {
+            try {
+                Thread.sleep(Duration.ofMinutes(30));
+            } catch (InterruptedException e) {
+                //ignore
+            }
+            metrics.clear(runId);
+        });
     }
 
     @Override

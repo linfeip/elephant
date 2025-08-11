@@ -8,7 +8,7 @@ import java.time.Duration;
 public class ActionData {
     private String data;
     private int step;
-    private int timeout;
+    private Duration timeout;
     private Duration delay;
     private String comment;
     private int loop;

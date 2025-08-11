@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.linfp.elephant.metrics.Metrics;
 import lombok.Data;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 
 import java.net.URI;
@@ -15,10 +16,12 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
+@Slf4j
 public class HttpCallAction implements IAction {
 
     private static final HttpClient CLIENT = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(30)).build();
     private static final Semaphore LIMITER = new Semaphore(1000);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(15);
 
     private final HttpArgs httpArgs;
 
@@ -35,14 +38,18 @@ public class HttpCallAction implements IAction {
 
     @Override
     public Metrics.Result doAction(Robot robot) throws InterruptedException {
-        if (data.getDelay().getSeconds() > 0) {
+        if (data.getDelay() != null && !data.getDelay().isZero()) {
             Thread.sleep(data.getDelay());
         }
 
         LIMITER.acquire();
 
+        if (log.isInfoEnabled()) {
+            log.debug("starting http.call: {}", this.httpArgs);
+        }
+
         var result = new Metrics.Result();
-        var start = System.currentTimeMillis();
+        var start = System.nanoTime();
         try {
             var builder = HttpRequest.newBuilder();
             if (httpArgs.headers != null) {
@@ -59,6 +66,11 @@ public class HttpCallAction implements IAction {
 
             builder.method(httpArgs.method, bodyPublisher);
             builder.uri(new URI(httpArgs.url));
+            var timeout = DEFAULT_TIMEOUT;
+            if (data.getTimeout() != null && !data.getTimeout().isZero()) {
+                timeout = data.getTimeout();
+            }
+            builder.timeout(timeout);
             var req = builder.build();
             var resp = CLIENT.send(req, HttpResponse.BodyHandlers.ofString());
 
@@ -71,19 +83,18 @@ public class HttpCallAction implements IAction {
             result.setCode(1);
             result.setError(e.getMessage());
         } finally {
-            var elapsed = System.currentTimeMillis() - start;
+            var elapsed = System.nanoTime() - start;
             result.setElapsed(Duration.ofNanos(elapsed));
-            result.setName(name());
+            result.setName("http.call");
             result.setComment(data.getComment());
             LIMITER.release();
+
+            if (log.isDebugEnabled()) {
+                log.debug("finished http.call result: {}", result);
+            }
         }
 
         return result;
-    }
-
-    @Override
-    public String name() {
-        return "http.call";
     }
 
     @Override

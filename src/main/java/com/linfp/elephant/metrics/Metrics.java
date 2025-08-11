@@ -33,6 +33,7 @@ public class Metrics {
                 )
                 .minimumExpectedValue(Duration.ofMillis(1))
                 .maximumExpectedValue(Duration.ofSeconds(30))
+                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
                 .tag("runId", result.runId)
                 .tag("comment", result.comment)
                 .register(registry)

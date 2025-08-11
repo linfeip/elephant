@@ -3,6 +3,7 @@ package com.linfp.elephant.configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.linfp.elephant.metrics.Metrics;
 import com.linfp.elephant.robot.ActionData;
+import com.linfp.elephant.robot.GrpcCallAction;
 import com.linfp.elephant.robot.HttpCallAction;
 import com.linfp.elephant.robot.IAction;
 import com.linfp.elephant.runner.RunnerManager;
@@ -19,8 +20,13 @@ import java.util.function.Function;
 public class AutoConfiguration {
 
     @Bean("http.call")
-    public Function<ActionData, IAction> httpRequestAction(ObjectMapper om) {
+    public Function<ActionData, IAction> httpCallAction(ObjectMapper om) {
         return data -> new HttpCallAction(data, om);
+    }
+
+    @Bean("grpc.call")
+    public Function<ActionData, IAction> grpcCallAction(ObjectMapper om) {
+        return data -> new GrpcCallAction(data, om);
     }
 
     @Bean

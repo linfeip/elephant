@@ -45,14 +45,5 @@ public class RunnerManager {
         if (runner != null) {
             runner.stop();
         }
-
-        Thread.startVirtualThread(() -> {
-            try {
-                Thread.sleep(Duration.ofMinutes(1));
-            } catch (InterruptedException e) {
-                //ignore
-            }
-            metrics.clear(runId);
-        });
     }
 }

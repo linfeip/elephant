@@ -2,11 +2,22 @@ package com.linfp.elephant.api;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.linfp.elephant.serializer.DurationDeserializer;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.time.Duration;
 import java.util.List;
 
-public record RunRequest(List<Action> actions, Robot robot) {
+@Data
+public class RunRequest {
+
+    @NotEmpty(message = "actions not empty")
+    private List<Action> actions;
+
+    @NotNull(message = "robot not empty")
+    private Robot robot;
 
     public static class Action {
         public String action;
@@ -14,9 +25,11 @@ public record RunRequest(List<Action> actions, Robot robot) {
         @JsonDeserialize(using = DurationDeserializer.class)
         public Duration delay;
 
+        @NotBlank
         public String data;
 
-        public int timeout;
+        @JsonDeserialize(using = DurationDeserializer.class)
+        public Duration timeout;
 
         public int loop;
 
