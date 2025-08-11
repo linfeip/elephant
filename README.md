@@ -6,3 +6,17 @@
 - 支持流程化编排
 - 提供WEB可视化界面
 - 支持变量表达式模版
+
+# 怎么运行?
+
+## 使用Docker build
+
+docker build -t elephant:latest .
+
+## 然后Docker run
+
+docker run -d  -p 8080:8080 elephant:latest
+
+## 运行成功
+
+直接流量器打开http://localhost:8080 就可以看到压测前端界面了
