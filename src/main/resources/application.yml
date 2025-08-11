@@ -1,9 +1,10 @@
 spring:
   application:
     name: elephant
-  threads:
-    virtual:
-      enabled: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    static-path-pattern: /**
 logging:
   level:
     io.micrometer.core.instrument.logging: INFO
