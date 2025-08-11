@@ -3,33 +3,33 @@
 ############################################
 # Build stage: compile Spring Boot with JDK 24
 ############################################
-FROM maven:3.9.8-eclipse-temurin-24 AS build
+FROM dhub.kubesre.xyz/maven:3.9.11 AS build
 WORKDIR /workspace
+
+# Use Aliyun Maven mirror for faster dependency downloads inside China
+COPY maven-settings.xml /usr/share/maven/conf/settings.xml
 
 # Pre-fetch dependencies for better layer caching
 COPY pom.xml .
-RUN --mount=type=cache,target=/root/.m2 mvn -B -DskipTests dependency:go-offline
+RUN --mount=type=cache,target=/root/.m2 mvn -s /usr/share/maven/conf/settings.xml -B -DskipTests dependency:go-offline
 
 # Copy sources and build
 COPY src ./src
-RUN --mount=type=cache,target=/root/.m2 mvn -B -DskipTests package
+RUN --mount=type=cache,target=/root/.m2 bash -lc 'mvn -s /usr/share/maven/conf/settings.xml -B -DskipTests package && JAR=$(ls -1 target/*.jar | head -n 1) && mv "$JAR" target/app.jar'
 
 ############################################
-# Runtime stage: run on Java 24 JRE
+# Runtime stage: run on JRE
 ############################################
-FROM eclipse-temurin:24-jre
+FROM dockerhub.xiz.im/ubuntu/jre:21-24.04_stable
 WORKDIR /app
 
-# Copy the built jar (assumes only one application jar produced)
-COPY --from=build /workspace/target/*.jar /app/
-
-# Normalize jar name to app.jar for stable entrypoint
-RUN set -eux; JAR=$(ls -1 /app/*.jar | head -n 1); mv "$JAR" /app/app.jar
+# Copy the normalized application jar
+COPY --from=build /workspace/target/app.jar /app/app.jar
 
 EXPOSE 8080
 
-# Tweakable JVM options
-ENV JAVA_OPTS="-XX:MaxRAMPercentage=75 -Dfile.encoding=UTF-8"
+# Tweakable JVM options via JAVA_TOOL_OPTIONS (picked up automatically by JVM)
+ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75 -Dfile.encoding=UTF-8"
 
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
 
