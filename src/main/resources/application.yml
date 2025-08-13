@@ -12,3 +12,5 @@ logging:
   level:
     io.micrometer.core.instrument.logging: INFO
     root: INFO
+grpc:
+  port: 8081

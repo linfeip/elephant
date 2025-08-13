@@ -3,17 +3,16 @@ package com.linfp.elephant.runner;
 import com.linfp.elephant.api.RunRequest;
 import com.linfp.elephant.converter.Converter;
 import com.linfp.elephant.metrics.Metrics;
+import com.linfp.elephant.protocol.DynamicProto;
 import com.linfp.elephant.robot.ActionData;
 import com.linfp.elephant.robot.IAction;
 import com.linfp.elephant.robot.Robot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Function;
 
@@ -37,6 +36,15 @@ public class LocalRunner implements IRunner {
     @Override
     public void run(RunRequest config) {
         logger.info("starting run");
+
+        var dynamicProto = new DynamicProto();
+        if (config.getProtos() != null) {
+            // 动态解析gRPC proto文件
+            for (String proto : config.getProtos()) {
+                dynamicProto.register(new ByteArrayInputStream(proto.getBytes()));
+            }
+        }
+
         // 将配置中的Actions, 转成程序中的任务Actions
         List<IAction> actions = new ArrayList<>(config.getActions().size());
         var curStep = 0;
@@ -62,6 +70,7 @@ public class LocalRunner implements IRunner {
 
         for (var i = 0; i < robot.num; i++) {
             var r = new Robot(runId, metrics, latch);
+            r.setDynamicProto(dynamicProto);
             robots.add(r);
             r.doLoop(actions);
         }

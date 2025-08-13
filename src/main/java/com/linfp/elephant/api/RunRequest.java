@@ -19,6 +19,8 @@ public class RunRequest {
     @NotNull(message = "robot not empty")
     private Robot robot;
 
+    private List<String> protos;
+
     public static class Action {
         public String action;
 

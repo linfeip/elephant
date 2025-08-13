@@ -6,21 +6,30 @@
 - 支持流程化编排
 - 提供WEB可视化界面
 - 支持变量表达式模版
+- 动态解析Proto执行Grpc
 
 # Preview
 
 http://47.99.126.118:8080/
 
-# 怎么运行?
+# 运行
 
-## 使用Docker build
+clone项目, 运行, 打开http://localhost:8080 就可以看到压测前端界面了
 
-docker build -t elephant:latest .
+# 界面
 
-## 然后Docker run
+## 主配置
 
-docker run -d  -p 8080:8080 elephant:latest
+![示例图片](img.png)
 
-## 运行成功
+## gRPC
 
-直接流量器打开http://localhost:8080 就可以看到压测前端界面了
+![gRPC](grpc.png)
+
+## HTTP
+
+![HTTP](http.png)
+
+## 压测指标
+
+![Metrics](metrics.png)

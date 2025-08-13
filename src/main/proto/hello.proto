@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.linfp.elephant.grpc";
+option java_outer_classname = "HelloProto";
+
+package hello;
+
+service Greeter {
+  rpc SayHello(HelloRequest) returns (HelloReply);
+  rpc Ping(PingRequest) returns(PingReply);
+}
+
+message HelloRequest {
+  string name = 1;
+  int32 num = 2;
+  HelloParam param = 3;
+}
+
+message HelloReply {
+  string message = 1;
+}
+
+message PingRequest {}
+
+message PingReply {}
+
+message HelloParam {
+  string arg1 = 1;
+  int32 arg2 = 2;
+}

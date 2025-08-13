@@ -44,7 +44,7 @@ public class HttpCallAction implements IAction {
 
         LIMITER.acquire();
 
-        if (log.isInfoEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("starting http.call: {}", this.httpArgs);
         }
 

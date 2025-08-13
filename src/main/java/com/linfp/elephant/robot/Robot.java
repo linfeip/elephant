@@ -1,17 +1,20 @@
 package com.linfp.elephant.robot;
 
 import com.linfp.elephant.metrics.Metrics;
+import com.linfp.elephant.protocol.DynamicProto;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Robot {
     private final ReentrantReadWriteLock locker = new ReentrantReadWriteLock();
 
-    private final Map<String, Object> data = new HashMap<>(16);
+    private final Map<String, Object> data = new ConcurrentHashMap<>(16);
+
+    private DynamicProto dynamicProto;
 
     private final Metrics metrics;
 
@@ -66,5 +69,13 @@ public class Robot {
 
     public void shutdown() {
         th.interrupt();
+    }
+
+    public DynamicProto getDynamicProto() {
+        return dynamicProto;
+    }
+
+    public void setDynamicProto(DynamicProto dynamicProto) {
+        this.dynamicProto = dynamicProto;
     }
 }
