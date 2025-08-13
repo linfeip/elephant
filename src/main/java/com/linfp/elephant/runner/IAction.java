@@ -1,4 +1,4 @@
-package com.linfp.elephant.robot;
+package com.linfp.elephant.runner;
 
 import com.linfp.elephant.metrics.Metrics;
 

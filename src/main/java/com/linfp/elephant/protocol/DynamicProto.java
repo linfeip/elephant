@@ -13,8 +13,9 @@ import io.protostuff.compiler.model.Enum;
 import io.protostuff.compiler.model.Field;
 import io.protostuff.compiler.model.Message;
 import io.protostuff.compiler.parser.*;
-import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,8 +24,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Slf4j
 public class DynamicProto {
+
+    private final static Logger logger = LoggerFactory.getLogger(DynamicProto.class);
+
     private static class InputStreamReader implements FileReader {
 
         private final InputStream in;
@@ -38,7 +41,7 @@ public class DynamicProto {
             try {
                 return CharStreams.fromStream(in);
             } catch (Exception e) {
-                log.error("Could not read {}", name, e);
+                logger.error("Could not read {}", name, e);
             }
             return null;
         }

@@ -1,29 +1,25 @@
 package com.linfp.elephant.api;
 
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 public class StatResponse {
 
-    private List<StatItem> items = new ArrayList<>();
+    public List<StatItem> items = new ArrayList<>();
 
-    @Data
     public static class StatItem {
-        private String name;
+        public String name;
 
-        private String p99;
+        public String p99;
 
-        private String p90;
+        public String p90;
 
-        private String p50;
+        public String p50;
 
-        private Long count;
+        public Long count;
 
-        private String avg;
+        public String avg;
 
-        private Integer qps;
+        public Integer qps;
     }
 }

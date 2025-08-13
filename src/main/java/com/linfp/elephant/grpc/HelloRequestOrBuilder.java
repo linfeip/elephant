@@ -6,39 +6,47 @@
 package com.linfp.elephant.grpc;
 
 public interface HelloRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:hello.HelloRequest)
-    com.google.protobuf.MessageOrBuilder {
+        // @@protoc_insertion_point(interface_extends:hello.HelloRequest)
+        com.google.protobuf.MessageOrBuilder {
 
-  /**
-   * <code>string name = 1;</code>
-   * @return The name.
-   */
-  java.lang.String getName();
-  /**
-   * <code>string name = 1;</code>
-   * @return The bytes for name.
-   */
-  com.google.protobuf.ByteString
-      getNameBytes();
+    /**
+     * <code>string name = 1;</code>
+     *
+     * @return The name.
+     */
+    java.lang.String getName();
 
-  /**
-   * <code>int32 num = 2;</code>
-   * @return The num.
-   */
-  int getNum();
+    /**
+     * <code>string name = 1;</code>
+     *
+     * @return The bytes for name.
+     */
+    com.google.protobuf.ByteString
+    getNameBytes();
 
-  /**
-   * <code>.hello.HelloParam param = 3;</code>
-   * @return Whether the param field is set.
-   */
-  boolean hasParam();
-  /**
-   * <code>.hello.HelloParam param = 3;</code>
-   * @return The param.
-   */
-  com.linfp.elephant.grpc.HelloParam getParam();
-  /**
-   * <code>.hello.HelloParam param = 3;</code>
-   */
-  com.linfp.elephant.grpc.HelloParamOrBuilder getParamOrBuilder();
+    /**
+     * <code>int32 num = 2;</code>
+     *
+     * @return The num.
+     */
+    int getNum();
+
+    /**
+     * <code>.hello.HelloParam param = 3;</code>
+     *
+     * @return Whether the param field is set.
+     */
+    boolean hasParam();
+
+    /**
+     * <code>.hello.HelloParam param = 3;</code>
+     *
+     * @return The param.
+     */
+    com.linfp.elephant.grpc.HelloParam getParam();
+
+    /**
+     * <code>.hello.HelloParam param = 3;</code>
+     */
+    com.linfp.elephant.grpc.HelloParamOrBuilder getParamOrBuilder();
 }

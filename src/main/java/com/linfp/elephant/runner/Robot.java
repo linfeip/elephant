@@ -1,6 +1,5 @@
-package com.linfp.elephant.robot;
+package com.linfp.elephant.runner;
 
-import com.linfp.elephant.metrics.Metrics;
 import com.linfp.elephant.protocol.DynamicProto;
 
 import java.util.List;
@@ -16,17 +15,14 @@ public class Robot {
 
     private DynamicProto dynamicProto;
 
-    private final Metrics metrics;
+    private Thread th;
+
+    private final LocalRunner runner;
 
     private final CountDownLatch latch;
 
-    private Thread th;
-
-    private final String runId;
-
-    public Robot(String runId, Metrics metrics, CountDownLatch latch) {
-        this.runId = runId;
-        this.metrics = metrics;
+    public Robot(LocalRunner runner, CountDownLatch latch) {
+        this.runner = runner;
         this.latch = latch;
     }
 
@@ -53,10 +49,10 @@ public class Robot {
         th = Thread.startVirtualThread(() -> {
             try {
                 for (var action : actions) {
-                    for (var i = 0; i < action.getData().getLoop(); i++) {
+                    for (var i = 0; i < action.getData().loop; i++) {
                         var result = action.doAction(this);
-                        result.setRunId(runId);
-                        metrics.update(result);
+                        result.runId = runner.runId();
+                        runner.getMetrics().update(result);
                     }
                 }
             } catch (InterruptedException e) {
@@ -77,5 +73,9 @@ public class Robot {
 
     public void setDynamicProto(DynamicProto dynamicProto) {
         this.dynamicProto = dynamicProto;
+    }
+
+    public LocalRunner getRunner() {
+        return runner;
     }
 }

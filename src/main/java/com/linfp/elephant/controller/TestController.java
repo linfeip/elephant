@@ -23,8 +23,8 @@ public class TestController {
     @PostMapping("testPost")
     public TestPostResponse testPost(@RequestBody TestPostRequest req) {
         var rsp = new TestPostResponse();
-        rsp.setName(req.getName());
-        rsp.setAge(req.getAge());
+        rsp.name = req.name;
+        rsp.age = req.age;
         return rsp;
     }
 }

@@ -56,8 +56,8 @@ class ElephantApplicationTests {
         robot.num = 10_000;
 
         var config = new RunRequest();
-        config.setActions(actions);
-        config.setRobot(robot);
+        config.actions = actions;
+        config.robot = robot;
 
         var latch = new CountDownLatch(1);
         runnerManager.runAsync(config, latch::countDown);

@@ -5,21 +5,19 @@ import com.linfp.elephant.serializer.DurationDeserializer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 
 import java.time.Duration;
 import java.util.List;
 
-@Data
 public class RunRequest {
 
     @NotEmpty(message = "actions not empty")
-    private List<Action> actions;
+    public List<Action> actions;
 
     @NotNull(message = "robot not empty")
-    private Robot robot;
+    public Robot robot;
 
-    private List<String> protos;
+    public List<String> protos;
 
     public static class Action {
         public String action;

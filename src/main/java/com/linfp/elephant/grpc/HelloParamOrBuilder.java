@@ -6,24 +6,28 @@
 package com.linfp.elephant.grpc;
 
 public interface HelloParamOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:hello.HelloParam)
-    com.google.protobuf.MessageOrBuilder {
+        // @@protoc_insertion_point(interface_extends:hello.HelloParam)
+        com.google.protobuf.MessageOrBuilder {
 
-  /**
-   * <code>string arg1 = 1;</code>
-   * @return The arg1.
-   */
-  java.lang.String getArg1();
-  /**
-   * <code>string arg1 = 1;</code>
-   * @return The bytes for arg1.
-   */
-  com.google.protobuf.ByteString
-      getArg1Bytes();
+    /**
+     * <code>string arg1 = 1;</code>
+     *
+     * @return The arg1.
+     */
+    java.lang.String getArg1();
 
-  /**
-   * <code>int32 arg2 = 2;</code>
-   * @return The arg2.
-   */
-  int getArg2();
+    /**
+     * <code>string arg1 = 1;</code>
+     *
+     * @return The bytes for arg1.
+     */
+    com.google.protobuf.ByteString
+    getArg1Bytes();
+
+    /**
+     * <code>int32 arg2 = 2;</code>
+     *
+     * @return The arg2.
+     */
+    int getArg2();
 }

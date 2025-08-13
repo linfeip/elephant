@@ -4,9 +4,7 @@ import com.linfp.elephant.api.RunRequest;
 import com.linfp.elephant.converter.Converter;
 import com.linfp.elephant.metrics.Metrics;
 import com.linfp.elephant.protocol.DynamicProto;
-import com.linfp.elephant.robot.ActionData;
-import com.linfp.elephant.robot.IAction;
-import com.linfp.elephant.robot.Robot;
+import io.grpc.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 
 public class LocalRunner implements IRunner {
@@ -27,6 +26,9 @@ public class LocalRunner implements IRunner {
 
     private final String runId;
 
+    private final Map<String, Channel> grpcChannels = new HashMap<>();
+    private final ReentrantReadWriteLock locker = new ReentrantReadWriteLock();
+
     public LocalRunner(Map<String, Function<ActionData, IAction>> actionFactory, Metrics metrics) {
         this.actionFactory = actionFactory;
         this.metrics = metrics;
@@ -38,24 +40,24 @@ public class LocalRunner implements IRunner {
         logger.info("starting run");
 
         var dynamicProto = new DynamicProto();
-        if (config.getProtos() != null) {
+        if (config.protos != null) {
             // 动态解析gRPC proto文件
-            for (String proto : config.getProtos()) {
+            for (String proto : config.protos) {
                 dynamicProto.register(new ByteArrayInputStream(proto.getBytes()));
             }
         }
 
         // 将配置中的Actions, 转成程序中的任务Actions
-        List<IAction> actions = new ArrayList<>(config.getActions().size());
+        List<IAction> actions = new ArrayList<>(config.actions.size());
         var curStep = 0;
-        for (var act : config.getActions()) {
+        for (var act : config.actions) {
             var makeFn = actionFactory.get(act.action);
             if (makeFn == null) {
                 throw new RuntimeException("Unknown action: " + act.action);
             }
 
             var data = Converter.convert(act);
-            data.setStep(curStep);
+            data.step = curStep;
 
             var action = makeFn.apply(data);
             actions.add(action);
@@ -64,12 +66,12 @@ public class LocalRunner implements IRunner {
         }
 
         // 构建Robot, Robot独立运行所有任务Actions
-        var robot = config.getRobot();
+        var robot = config.robot;
         var start = System.nanoTime();
         var latch = new CountDownLatch(robot.num);
 
         for (var i = 0; i < robot.num; i++) {
-            var r = new Robot(runId, metrics, latch);
+            var r = new Robot(this, latch);
             r.setDynamicProto(dynamicProto);
             robots.add(r);
             r.doLoop(actions);
@@ -104,5 +106,27 @@ public class LocalRunner implements IRunner {
     @Override
     public String runId() {
         return runId;
+    }
+
+    public Metrics getMetrics() {
+        return metrics;
+    }
+
+    public Channel getChannel(String addr) {
+        locker.readLock().lock();
+        try {
+            return grpcChannels.get(addr);
+        } finally {
+            locker.readLock().unlock();
+        }
+    }
+
+    public void setChannel(String addr, Channel channel) {
+        locker.writeLock().lock();
+        try {
+            grpcChannels.putIfAbsent(addr, channel);
+        } finally {
+            locker.writeLock().unlock();
+        }
     }
 }

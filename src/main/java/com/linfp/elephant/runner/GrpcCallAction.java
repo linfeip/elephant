@@ -1,4 +1,4 @@
-package com.linfp.elephant.robot;
+package com.linfp.elephant.runner;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,6 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.MethodDescriptor;
 import io.grpc.protobuf.ProtoUtils;
 import io.grpc.stub.ClientCalls;
-import lombok.Data;
 
 import java.time.Duration;
 import java.util.Map;
@@ -24,7 +23,7 @@ public class GrpcCallAction implements IAction {
     public GrpcCallAction(ActionData data, ObjectMapper om) {
         this.data = data;
         try {
-            this.grpcArgs = om.readValue(data.getData(), GrpcCallAction.GrpcArgs.class);
+            this.grpcArgs = om.readValue(data.data, GrpcCallAction.GrpcArgs.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -33,14 +32,14 @@ public class GrpcCallAction implements IAction {
 
     @Override
     public Metrics.Result doAction(Robot robot) throws InterruptedException {
-        if (data.getDelay() != null && !data.getDelay().isZero()) {
-            Thread.sleep(data.getDelay());
+        if (data.delay != null && !data.delay.isZero()) {
+            Thread.sleep(data.delay);
         }
 
         var result = new Metrics.Result();
         var start = System.nanoTime();
 
-        var fullMethod = grpcArgs.getService() + "/" + grpcArgs.getMethod();
+        var fullMethod = grpcArgs.service + "/" + grpcArgs.method;
 
         try {
             Map<String, Object> params = om.readValue(grpcArgs.body, new TypeReference<>() {
@@ -60,23 +59,32 @@ public class GrpcCallAction implements IAction {
                             DynamicMessage.getDefaultInstance(outDesc)))
                     .build();
 
-            // TODO 这里的channel可以缓存起来放在, Runner下的global cache中
-            var channel = ManagedChannelBuilder
-                    .forTarget(grpcArgs.getAddr())
-                    .usePlaintext()
-                    .build();
+            var channel = robot.getRunner().getChannel(grpcArgs.addr);
+            if (channel == null) {
+                var ss = grpcArgs.addr.split(":", 2);
+                if (ss.length != 2) {
+                    throw new RuntimeException("Invalid grpc address: " + grpcArgs.addr);
+                }
+                var name = ss[0];
+                var port = Integer.parseInt(ss[1]);
+                channel = ManagedChannelBuilder
+                        .forAddress(name, port)
+                        .usePlaintext()
+                        .build();
+                robot.getRunner().setChannel(grpcArgs.addr, channel);
+            }
 
             var resp = ClientCalls.blockingUnaryCall(
                     channel, method, CallOptions.DEFAULT, inArgs);
 
         } catch (Exception e) {
-            result.setCode(1);
-            result.setError(e.getMessage());
+            result.code = 1;
+            result.error = e.getMessage();
         } finally {
             var elapsed = System.nanoTime() - start;
-            result.setElapsed(Duration.ofNanos(elapsed));
-            result.setName("grpc.call");
-            result.setComment(data.getComment());
+            result.elapsed = Duration.ofNanos(elapsed);
+            result.name = "grpc.call";
+            result.comment = data.comment;
         }
 
         return result;
@@ -84,7 +92,7 @@ public class GrpcCallAction implements IAction {
 
     @Override
     public int step() {
-        return data.getStep();
+        return data.step;
     }
 
     @Override
@@ -92,11 +100,10 @@ public class GrpcCallAction implements IAction {
         return data;
     }
 
-    @Data
     public static class GrpcArgs {
-        private String addr;
-        private String service;
-        private String method;
-        private String body;
+        public String addr;
+        public String service;
+        public String method;
+        public String body;
     }
 }

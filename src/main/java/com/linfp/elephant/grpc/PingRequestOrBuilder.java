@@ -6,6 +6,6 @@
 package com.linfp.elephant.grpc;
 
 public interface PingRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:hello.PingRequest)
-    com.google.protobuf.MessageOrBuilder {
+        // @@protoc_insertion_point(interface_extends:hello.PingRequest)
+        com.google.protobuf.MessageOrBuilder {
 }

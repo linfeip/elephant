@@ -6,6 +6,6 @@
 package com.linfp.elephant.grpc;
 
 public interface PingReplyOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:hello.PingReply)
-    com.google.protobuf.MessageOrBuilder {
+        // @@protoc_insertion_point(interface_extends:hello.PingReply)
+        com.google.protobuf.MessageOrBuilder {
 }

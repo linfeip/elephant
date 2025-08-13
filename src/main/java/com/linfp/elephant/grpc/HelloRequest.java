@@ -9,752 +9,819 @@ package com.linfp.elephant.grpc;
  * Protobuf type {@code hello.HelloRequest}
  */
 public final class HelloRequest extends
-    com.google.protobuf.GeneratedMessage implements
-    // @@protoc_insertion_point(message_implements:hello.HelloRequest)
-    HelloRequestOrBuilder {
-private static final long serialVersionUID = 0L;
-  static {
-    com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
-      com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
-      /* major= */ 4,
-      /* minor= */ 29,
-      /* patch= */ 3,
-      /* suffix= */ "",
-      HelloRequest.class.getName());
-  }
-  // Use HelloRequest.newBuilder() to construct.
-  private HelloRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-    super(builder);
-  }
-  private HelloRequest() {
-    name_ = "";
-  }
+        com.google.protobuf.GeneratedMessage implements
+        // @@protoc_insertion_point(message_implements:hello.HelloRequest)
+        HelloRequestOrBuilder {
+    private static final long serialVersionUID = 0L;
 
-  public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
-    return com.linfp.elephant.grpc.HelloProto.internal_static_hello_HelloRequest_descriptor;
-  }
-
-  @java.lang.Override
-  protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internalGetFieldAccessorTable() {
-    return com.linfp.elephant.grpc.HelloProto.internal_static_hello_HelloRequest_fieldAccessorTable
-        .ensureFieldAccessorsInitialized(
-            com.linfp.elephant.grpc.HelloRequest.class, com.linfp.elephant.grpc.HelloRequest.Builder.class);
-  }
-
-  private int bitField0_;
-  public static final int NAME_FIELD_NUMBER = 1;
-  @SuppressWarnings("serial")
-  private volatile java.lang.Object name_ = "";
-  /**
-   * <code>string name = 1;</code>
-   * @return The name.
-   */
-  @java.lang.Override
-  public java.lang.String getName() {
-    java.lang.Object ref = name_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      name_ = s;
-      return s;
+    static {
+        com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
+                com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
+                /* major= */ 4,
+                /* minor= */ 29,
+                /* patch= */ 3,
+                /* suffix= */ "",
+                HelloRequest.class.getName());
     }
-  }
-  /**
-   * <code>string name = 1;</code>
-   * @return The bytes for name.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getNameBytes() {
-    java.lang.Object ref = name_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      name_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
+
+    // Use HelloRequest.newBuilder() to construct.
+    private HelloRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+        super(builder);
     }
-  }
 
-  public static final int NUM_FIELD_NUMBER = 2;
-  private int num_ = 0;
-  /**
-   * <code>int32 num = 2;</code>
-   * @return The num.
-   */
-  @java.lang.Override
-  public int getNum() {
-    return num_;
-  }
-
-  public static final int PARAM_FIELD_NUMBER = 3;
-  private com.linfp.elephant.grpc.HelloParam param_;
-  /**
-   * <code>.hello.HelloParam param = 3;</code>
-   * @return Whether the param field is set.
-   */
-  @java.lang.Override
-  public boolean hasParam() {
-    return ((bitField0_ & 0x00000001) != 0);
-  }
-  /**
-   * <code>.hello.HelloParam param = 3;</code>
-   * @return The param.
-   */
-  @java.lang.Override
-  public com.linfp.elephant.grpc.HelloParam getParam() {
-    return param_ == null ? com.linfp.elephant.grpc.HelloParam.getDefaultInstance() : param_;
-  }
-  /**
-   * <code>.hello.HelloParam param = 3;</code>
-   */
-  @java.lang.Override
-  public com.linfp.elephant.grpc.HelloParamOrBuilder getParamOrBuilder() {
-    return param_ == null ? com.linfp.elephant.grpc.HelloParam.getDefaultInstance() : param_;
-  }
-
-  private byte memoizedIsInitialized = -1;
-  @java.lang.Override
-  public final boolean isInitialized() {
-    byte isInitialized = memoizedIsInitialized;
-    if (isInitialized == 1) return true;
-    if (isInitialized == 0) return false;
-
-    memoizedIsInitialized = 1;
-    return true;
-  }
-
-  @java.lang.Override
-  public void writeTo(com.google.protobuf.CodedOutputStream output)
-                      throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
-      com.google.protobuf.GeneratedMessage.writeString(output, 1, name_);
+    private HelloRequest() {
+        name_ = "";
     }
-    if (num_ != 0) {
-      output.writeInt32(2, num_);
-    }
-    if (((bitField0_ & 0x00000001) != 0)) {
-      output.writeMessage(3, getParam());
-    }
-    getUnknownFields().writeTo(output);
-  }
 
-  @java.lang.Override
-  public int getSerializedSize() {
-    int size = memoizedSize;
-    if (size != -1) return size;
-
-    size = 0;
-    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
-      size += com.google.protobuf.GeneratedMessage.computeStringSize(1, name_);
-    }
-    if (num_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(2, num_);
-    }
-    if (((bitField0_ & 0x00000001) != 0)) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, getParam());
-    }
-    size += getUnknownFields().getSerializedSize();
-    memoizedSize = size;
-    return size;
-  }
-
-  @java.lang.Override
-  public boolean equals(final java.lang.Object obj) {
-    if (obj == this) {
-     return true;
-    }
-    if (!(obj instanceof com.linfp.elephant.grpc.HelloRequest)) {
-      return super.equals(obj);
-    }
-    com.linfp.elephant.grpc.HelloRequest other = (com.linfp.elephant.grpc.HelloRequest) obj;
-
-    if (!getName()
-        .equals(other.getName())) return false;
-    if (getNum()
-        != other.getNum()) return false;
-    if (hasParam() != other.hasParam()) return false;
-    if (hasParam()) {
-      if (!getParam()
-          .equals(other.getParam())) return false;
-    }
-    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
-    return true;
-  }
-
-  @java.lang.Override
-  public int hashCode() {
-    if (memoizedHashCode != 0) {
-      return memoizedHashCode;
-    }
-    int hash = 41;
-    hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + NAME_FIELD_NUMBER;
-    hash = (53 * hash) + getName().hashCode();
-    hash = (37 * hash) + NUM_FIELD_NUMBER;
-    hash = (53 * hash) + getNum();
-    if (hasParam()) {
-      hash = (37 * hash) + PARAM_FIELD_NUMBER;
-      hash = (53 * hash) + getParam().hashCode();
-    }
-    hash = (29 * hash) + getUnknownFields().hashCode();
-    memoizedHashCode = hash;
-    return hash;
-  }
-
-  public static com.linfp.elephant.grpc.HelloRequest parseFrom(
-      java.nio.ByteBuffer data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static com.linfp.elephant.grpc.HelloRequest parseFrom(
-      java.nio.ByteBuffer data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static com.linfp.elephant.grpc.HelloRequest parseFrom(
-      com.google.protobuf.ByteString data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static com.linfp.elephant.grpc.HelloRequest parseFrom(
-      com.google.protobuf.ByteString data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static com.linfp.elephant.grpc.HelloRequest parseFrom(byte[] data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static com.linfp.elephant.grpc.HelloRequest parseFrom(
-      byte[] data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static com.linfp.elephant.grpc.HelloRequest parseFrom(java.io.InputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessage
-        .parseWithIOException(PARSER, input);
-  }
-  public static com.linfp.elephant.grpc.HelloRequest parseFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessage
-        .parseWithIOException(PARSER, input, extensionRegistry);
-  }
-
-  public static com.linfp.elephant.grpc.HelloRequest parseDelimitedFrom(java.io.InputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessage
-        .parseDelimitedWithIOException(PARSER, input);
-  }
-
-  public static com.linfp.elephant.grpc.HelloRequest parseDelimitedFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessage
-        .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-  }
-  public static com.linfp.elephant.grpc.HelloRequest parseFrom(
-      com.google.protobuf.CodedInputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessage
-        .parseWithIOException(PARSER, input);
-  }
-  public static com.linfp.elephant.grpc.HelloRequest parseFrom(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessage
-        .parseWithIOException(PARSER, input, extensionRegistry);
-  }
-
-  @java.lang.Override
-  public Builder newBuilderForType() { return newBuilder(); }
-  public static Builder newBuilder() {
-    return DEFAULT_INSTANCE.toBuilder();
-  }
-  public static Builder newBuilder(com.linfp.elephant.grpc.HelloRequest prototype) {
-    return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-  }
-  @java.lang.Override
-  public Builder toBuilder() {
-    return this == DEFAULT_INSTANCE
-        ? new Builder() : new Builder().mergeFrom(this);
-  }
-
-  @java.lang.Override
-  protected Builder newBuilderForType(
-      com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-    Builder builder = new Builder(parent);
-    return builder;
-  }
-  /**
-   * Protobuf type {@code hello.HelloRequest}
-   */
-  public static final class Builder extends
-      com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:hello.HelloRequest)
-      com.linfp.elephant.grpc.HelloRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.linfp.elephant.grpc.HelloProto.internal_static_hello_HelloRequest_descriptor;
+    getDescriptor() {
+        return com.linfp.elephant.grpc.HelloProto.internal_static_hello_HelloRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.linfp.elephant.grpc.HelloProto.internal_static_hello_HelloRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.linfp.elephant.grpc.HelloRequest.class, com.linfp.elephant.grpc.HelloRequest.Builder.class);
+    internalGetFieldAccessorTable() {
+        return com.linfp.elephant.grpc.HelloProto.internal_static_hello_HelloRequest_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                        com.linfp.elephant.grpc.HelloRequest.class, com.linfp.elephant.grpc.HelloRequest.Builder.class);
     }
 
-    // Construct using com.linfp.elephant.grpc.HelloRequest.newBuilder()
-    private Builder() {
-      maybeForceBuilderInitialization();
-    }
-
-    private Builder(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessage
-              .alwaysUseFieldBuilders) {
-        getParamFieldBuilder();
-      }
-    }
-    @java.lang.Override
-    public Builder clear() {
-      super.clear();
-      bitField0_ = 0;
-      name_ = "";
-      num_ = 0;
-      param_ = null;
-      if (paramBuilder_ != null) {
-        paramBuilder_.dispose();
-        paramBuilder_ = null;
-      }
-      return this;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Descriptors.Descriptor
-        getDescriptorForType() {
-      return com.linfp.elephant.grpc.HelloProto.internal_static_hello_HelloRequest_descriptor;
-    }
-
-    @java.lang.Override
-    public com.linfp.elephant.grpc.HelloRequest getDefaultInstanceForType() {
-      return com.linfp.elephant.grpc.HelloRequest.getDefaultInstance();
-    }
-
-    @java.lang.Override
-    public com.linfp.elephant.grpc.HelloRequest build() {
-      com.linfp.elephant.grpc.HelloRequest result = buildPartial();
-      if (!result.isInitialized()) {
-        throw newUninitializedMessageException(result);
-      }
-      return result;
-    }
-
-    @java.lang.Override
-    public com.linfp.elephant.grpc.HelloRequest buildPartial() {
-      com.linfp.elephant.grpc.HelloRequest result = new com.linfp.elephant.grpc.HelloRequest(this);
-      if (bitField0_ != 0) { buildPartial0(result); }
-      onBuilt();
-      return result;
-    }
-
-    private void buildPartial0(com.linfp.elephant.grpc.HelloRequest result) {
-      int from_bitField0_ = bitField0_;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.name_ = name_;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.num_ = num_;
-      }
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.param_ = paramBuilder_ == null
-            ? param_
-            : paramBuilder_.build();
-        to_bitField0_ |= 0x00000001;
-      }
-      result.bitField0_ |= to_bitField0_;
-    }
-
-    @java.lang.Override
-    public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.linfp.elephant.grpc.HelloRequest) {
-        return mergeFrom((com.linfp.elephant.grpc.HelloRequest)other);
-      } else {
-        super.mergeFrom(other);
-        return this;
-      }
-    }
-
-    public Builder mergeFrom(com.linfp.elephant.grpc.HelloRequest other) {
-      if (other == com.linfp.elephant.grpc.HelloRequest.getDefaultInstance()) return this;
-      if (!other.getName().isEmpty()) {
-        name_ = other.name_;
-        bitField0_ |= 0x00000001;
-        onChanged();
-      }
-      if (other.getNum() != 0) {
-        setNum(other.getNum());
-      }
-      if (other.hasParam()) {
-        mergeParam(other.getParam());
-      }
-      this.mergeUnknownFields(other.getUnknownFields());
-      onChanged();
-      return this;
-    }
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-      return true;
-    }
-
-    @java.lang.Override
-    public Builder mergeFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              name_ = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000001;
-              break;
-            } // case 10
-            case 16: {
-              num_ = input.readInt32();
-              bitField0_ |= 0x00000002;
-              break;
-            } // case 16
-            case 26: {
-              input.readMessage(
-                  getParamFieldBuilder().getBuilder(),
-                  extensionRegistry);
-              bitField0_ |= 0x00000004;
-              break;
-            } // case 26
-            default: {
-              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
-                done = true; // was an endgroup tag
-              }
-              break;
-            } // default:
-          } // switch (tag)
-        } // while (!done)
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.unwrapIOException();
-      } finally {
-        onChanged();
-      } // finally
-      return this;
-    }
     private int bitField0_;
+    public static final int NAME_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object name_ = "";
 
-    private java.lang.Object name_ = "";
     /**
      * <code>string name = 1;</code>
+     *
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
-      java.lang.Object ref = name_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        name_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string name = 1;</code>
-     * @return The bytes for name.
-     */
-    public com.google.protobuf.ByteString
-        getNameBytes() {
-      java.lang.Object ref = name_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        name_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string name = 1;</code>
-     * @param value The name to set.
-     * @return This builder for chaining.
-     */
-    public Builder setName(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      name_ = value;
-      bitField0_ |= 0x00000001;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string name = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearName() {
-      name_ = getDefaultInstance().getName();
-      bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string name = 1;</code>
-     * @param value The bytes for name to set.
-     * @return This builder for chaining.
-     */
-    public Builder setNameBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      name_ = value;
-      bitField0_ |= 0x00000001;
-      onChanged();
-      return this;
+        java.lang.Object ref = name_;
+        if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+        } else {
+            com.google.protobuf.ByteString bs =
+                    (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            name_ = s;
+            return s;
+        }
     }
 
-    private int num_ ;
+    /**
+     * <code>string name = 1;</code>
+     *
+     * @return The bytes for name.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+    getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b =
+                    com.google.protobuf.ByteString.copyFromUtf8(
+                            (java.lang.String) ref);
+            name_ = b;
+            return b;
+        } else {
+            return (com.google.protobuf.ByteString) ref;
+        }
+    }
+
+    public static final int NUM_FIELD_NUMBER = 2;
+    private int num_ = 0;
+
     /**
      * <code>int32 num = 2;</code>
+     *
      * @return The num.
      */
     @java.lang.Override
     public int getNum() {
-      return num_;
-    }
-    /**
-     * <code>int32 num = 2;</code>
-     * @param value The num to set.
-     * @return This builder for chaining.
-     */
-    public Builder setNum(int value) {
-
-      num_ = value;
-      bitField0_ |= 0x00000002;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 num = 2;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearNum() {
-      bitField0_ = (bitField0_ & ~0x00000002);
-      num_ = 0;
-      onChanged();
-      return this;
+        return num_;
     }
 
+    public static final int PARAM_FIELD_NUMBER = 3;
     private com.linfp.elephant.grpc.HelloParam param_;
-    private com.google.protobuf.SingleFieldBuilder<
-        com.linfp.elephant.grpc.HelloParam, com.linfp.elephant.grpc.HelloParam.Builder, com.linfp.elephant.grpc.HelloParamOrBuilder> paramBuilder_;
+
     /**
      * <code>.hello.HelloParam param = 3;</code>
+     *
      * @return Whether the param field is set.
      */
+    @java.lang.Override
     public boolean hasParam() {
-      return ((bitField0_ & 0x00000004) != 0);
+        return ((bitField0_ & 0x00000001) != 0);
     }
+
     /**
      * <code>.hello.HelloParam param = 3;</code>
+     *
      * @return The param.
      */
-    public com.linfp.elephant.grpc.HelloParam getParam() {
-      if (paramBuilder_ == null) {
-        return param_ == null ? com.linfp.elephant.grpc.HelloParam.getDefaultInstance() : param_;
-      } else {
-        return paramBuilder_.getMessage();
-      }
-    }
-    /**
-     * <code>.hello.HelloParam param = 3;</code>
-     */
-    public Builder setParam(com.linfp.elephant.grpc.HelloParam value) {
-      if (paramBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        param_ = value;
-      } else {
-        paramBuilder_.setMessage(value);
-      }
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.hello.HelloParam param = 3;</code>
-     */
-    public Builder setParam(
-        com.linfp.elephant.grpc.HelloParam.Builder builderForValue) {
-      if (paramBuilder_ == null) {
-        param_ = builderForValue.build();
-      } else {
-        paramBuilder_.setMessage(builderForValue.build());
-      }
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.hello.HelloParam param = 3;</code>
-     */
-    public Builder mergeParam(com.linfp.elephant.grpc.HelloParam value) {
-      if (paramBuilder_ == null) {
-        if (((bitField0_ & 0x00000004) != 0) &&
-          param_ != null &&
-          param_ != com.linfp.elephant.grpc.HelloParam.getDefaultInstance()) {
-          getParamBuilder().mergeFrom(value);
-        } else {
-          param_ = value;
-        }
-      } else {
-        paramBuilder_.mergeFrom(value);
-      }
-      if (param_ != null) {
-        bitField0_ |= 0x00000004;
-        onChanged();
-      }
-      return this;
-    }
-    /**
-     * <code>.hello.HelloParam param = 3;</code>
-     */
-    public Builder clearParam() {
-      bitField0_ = (bitField0_ & ~0x00000004);
-      param_ = null;
-      if (paramBuilder_ != null) {
-        paramBuilder_.dispose();
-        paramBuilder_ = null;
-      }
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.hello.HelloParam param = 3;</code>
-     */
-    public com.linfp.elephant.grpc.HelloParam.Builder getParamBuilder() {
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return getParamFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.hello.HelloParam param = 3;</code>
-     */
-    public com.linfp.elephant.grpc.HelloParamOrBuilder getParamOrBuilder() {
-      if (paramBuilder_ != null) {
-        return paramBuilder_.getMessageOrBuilder();
-      } else {
-        return param_ == null ?
-            com.linfp.elephant.grpc.HelloParam.getDefaultInstance() : param_;
-      }
-    }
-    /**
-     * <code>.hello.HelloParam param = 3;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilder<
-        com.linfp.elephant.grpc.HelloParam, com.linfp.elephant.grpc.HelloParam.Builder, com.linfp.elephant.grpc.HelloParamOrBuilder> 
-        getParamFieldBuilder() {
-      if (paramBuilder_ == null) {
-        paramBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-            com.linfp.elephant.grpc.HelloParam, com.linfp.elephant.grpc.HelloParam.Builder, com.linfp.elephant.grpc.HelloParamOrBuilder>(
-                getParam(),
-                getParentForChildren(),
-                isClean());
-        param_ = null;
-      }
-      return paramBuilder_;
-    }
-
-    // @@protoc_insertion_point(builder_scope:hello.HelloRequest)
-  }
-
-  // @@protoc_insertion_point(class_scope:hello.HelloRequest)
-  private static final com.linfp.elephant.grpc.HelloRequest DEFAULT_INSTANCE;
-  static {
-    DEFAULT_INSTANCE = new com.linfp.elephant.grpc.HelloRequest();
-  }
-
-  public static com.linfp.elephant.grpc.HelloRequest getDefaultInstance() {
-    return DEFAULT_INSTANCE;
-  }
-
-  private static final com.google.protobuf.Parser<HelloRequest>
-      PARSER = new com.google.protobuf.AbstractParser<HelloRequest>() {
     @java.lang.Override
-    public HelloRequest parsePartialFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      Builder builder = newBuilder();
-      try {
-        builder.mergeFrom(input, extensionRegistry);
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(builder.buildPartial());
-      } catch (com.google.protobuf.UninitializedMessageException e) {
-        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(e)
-            .setUnfinishedMessage(builder.buildPartial());
-      }
-      return builder.buildPartial();
+    public com.linfp.elephant.grpc.HelloParam getParam() {
+        return param_ == null ? com.linfp.elephant.grpc.HelloParam.getDefaultInstance() : param_;
     }
-  };
 
-  public static com.google.protobuf.Parser<HelloRequest> parser() {
-    return PARSER;
-  }
+    /**
+     * <code>.hello.HelloParam param = 3;</code>
+     */
+    @java.lang.Override
+    public com.linfp.elephant.grpc.HelloParamOrBuilder getParamOrBuilder() {
+        return param_ == null ? com.linfp.elephant.grpc.HelloParam.getDefaultInstance() : param_;
+    }
 
-  @java.lang.Override
-  public com.google.protobuf.Parser<HelloRequest> getParserForType() {
-    return PARSER;
-  }
+    private byte memoizedIsInitialized = -1;
 
-  @java.lang.Override
-  public com.linfp.elephant.grpc.HelloRequest getDefaultInstanceForType() {
-    return DEFAULT_INSTANCE;
-  }
+    @java.lang.Override
+    public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+            throws java.io.IOException {
+        if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+            com.google.protobuf.GeneratedMessage.writeString(output, 1, name_);
+        }
+        if (num_ != 0) {
+            output.writeInt32(2, num_);
+        }
+        if (((bitField0_ & 0x00000001) != 0)) {
+            output.writeMessage(3, getParam());
+        }
+        getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+            size += com.google.protobuf.GeneratedMessage.computeStringSize(1, name_);
+        }
+        if (num_ != 0) {
+            size += com.google.protobuf.CodedOutputStream
+                    .computeInt32Size(2, num_);
+        }
+        if (((bitField0_ & 0x00000001) != 0)) {
+            size += com.google.protobuf.CodedOutputStream
+                    .computeMessageSize(3, getParam());
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSize = size;
+        return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof com.linfp.elephant.grpc.HelloRequest)) {
+            return super.equals(obj);
+        }
+        com.linfp.elephant.grpc.HelloRequest other = (com.linfp.elephant.grpc.HelloRequest) obj;
+
+        if (!getName()
+                .equals(other.getName())) return false;
+        if (getNum()
+                != other.getNum()) return false;
+        if (hasParam() != other.hasParam()) return false;
+        if (hasParam()) {
+            if (!getParam()
+                    .equals(other.getParam())) return false;
+        }
+        if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+        return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        if (memoizedHashCode != 0) {
+            return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + NAME_FIELD_NUMBER;
+        hash = (53 * hash) + getName().hashCode();
+        hash = (37 * hash) + NUM_FIELD_NUMBER;
+        hash = (53 * hash) + getNum();
+        if (hasParam()) {
+            hash = (37 * hash) + PARAM_FIELD_NUMBER;
+            hash = (53 * hash) + getParam().hashCode();
+        }
+        hash = (29 * hash) + getUnknownFields().hashCode();
+        memoizedHashCode = hash;
+        return hash;
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessage
+                .parseWithIOException(PARSER, input);
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessage
+                .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessage
+                .parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessage
+                .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessage
+                .parseWithIOException(PARSER, input);
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessage
+                .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() {
+        return newBuilder();
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+    }
+
+    public static Builder newBuilder(com.linfp.elephant.grpc.HelloRequest prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    @java.lang.Override
+    public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+                ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+    }
+
+    /**
+     * Protobuf type {@code hello.HelloRequest}
+     */
+    public static final class Builder extends
+            com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:hello.HelloRequest)
+            com.linfp.elephant.grpc.HelloRequestOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+            return com.linfp.elephant.grpc.HelloProto.internal_static_hello_HelloRequest_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+            return com.linfp.elephant.grpc.HelloProto.internal_static_hello_HelloRequest_fieldAccessorTable
+                    .ensureFieldAccessorsInitialized(
+                            com.linfp.elephant.grpc.HelloRequest.class, com.linfp.elephant.grpc.HelloRequest.Builder.class);
+        }
+
+        // Construct using com.linfp.elephant.grpc.HelloRequest.newBuilder()
+        private Builder() {
+            maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+                com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+        }
+
+        private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessage
+                    .alwaysUseFieldBuilders) {
+                getParamFieldBuilder();
+            }
+        }
+
+        @java.lang.Override
+        public Builder clear() {
+            super.clear();
+            bitField0_ = 0;
+            name_ = "";
+            num_ = 0;
+            param_ = null;
+            if (paramBuilder_ != null) {
+                paramBuilder_.dispose();
+                paramBuilder_ = null;
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+        getDescriptorForType() {
+            return com.linfp.elephant.grpc.HelloProto.internal_static_hello_HelloRequest_descriptor;
+        }
+
+        @java.lang.Override
+        public com.linfp.elephant.grpc.HelloRequest getDefaultInstanceForType() {
+            return com.linfp.elephant.grpc.HelloRequest.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public com.linfp.elephant.grpc.HelloRequest build() {
+            com.linfp.elephant.grpc.HelloRequest result = buildPartial();
+            if (!result.isInitialized()) {
+                throw newUninitializedMessageException(result);
+            }
+            return result;
+        }
+
+        @java.lang.Override
+        public com.linfp.elephant.grpc.HelloRequest buildPartial() {
+            com.linfp.elephant.grpc.HelloRequest result = new com.linfp.elephant.grpc.HelloRequest(this);
+            if (bitField0_ != 0) {
+                buildPartial0(result);
+            }
+            onBuilt();
+            return result;
+        }
+
+        private void buildPartial0(com.linfp.elephant.grpc.HelloRequest result) {
+            int from_bitField0_ = bitField0_;
+            if (((from_bitField0_ & 0x00000001) != 0)) {
+                result.name_ = name_;
+            }
+            if (((from_bitField0_ & 0x00000002) != 0)) {
+                result.num_ = num_;
+            }
+            int to_bitField0_ = 0;
+            if (((from_bitField0_ & 0x00000004) != 0)) {
+                result.param_ = paramBuilder_ == null
+                        ? param_
+                        : paramBuilder_.build();
+                to_bitField0_ |= 0x00000001;
+            }
+            result.bitField0_ |= to_bitField0_;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (other instanceof com.linfp.elephant.grpc.HelloRequest) {
+                return mergeFrom((com.linfp.elephant.grpc.HelloRequest) other);
+            } else {
+                super.mergeFrom(other);
+                return this;
+            }
+        }
+
+        public Builder mergeFrom(com.linfp.elephant.grpc.HelloRequest other) {
+            if (other == com.linfp.elephant.grpc.HelloRequest.getDefaultInstance()) return this;
+            if (!other.getName().isEmpty()) {
+                name_ = other.name_;
+                bitField0_ |= 0x00000001;
+                onChanged();
+            }
+            if (other.getNum() != 0) {
+                setNum(other.getNum());
+            }
+            if (other.hasParam()) {
+                mergeParam(other.getParam());
+            }
+            this.mergeUnknownFields(other.getUnknownFields());
+            onChanged();
+            return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+            return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+                com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws java.io.IOException {
+            if (extensionRegistry == null) {
+                throw new java.lang.NullPointerException();
+            }
+            try {
+                boolean done = false;
+                while (!done) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                        case 0:
+                            done = true;
+                            break;
+                        case 10: {
+                            name_ = input.readStringRequireUtf8();
+                            bitField0_ |= 0x00000001;
+                            break;
+                        } // case 10
+                        case 16: {
+                            num_ = input.readInt32();
+                            bitField0_ |= 0x00000002;
+                            break;
+                        } // case 16
+                        case 26: {
+                            input.readMessage(
+                                    getParamFieldBuilder().getBuilder(),
+                                    extensionRegistry);
+                            bitField0_ |= 0x00000004;
+                            break;
+                        } // case 26
+                        default: {
+                            if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                                done = true; // was an endgroup tag
+                            }
+                            break;
+                        } // default:
+                    } // switch (tag)
+                } // while (!done)
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.unwrapIOException();
+            } finally {
+                onChanged();
+            } // finally
+            return this;
+        }
+
+        private int bitField0_;
+
+        private java.lang.Object name_ = "";
+
+        /**
+         * <code>string name = 1;</code>
+         *
+         * @return The name.
+         */
+        public java.lang.String getName() {
+            java.lang.Object ref = name_;
+            if (!(ref instanceof java.lang.String)) {
+                com.google.protobuf.ByteString bs =
+                        (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                name_ = s;
+                return s;
+            } else {
+                return (java.lang.String) ref;
+            }
+        }
+
+        /**
+         * <code>string name = 1;</code>
+         *
+         * @return The bytes for name.
+         */
+        public com.google.protobuf.ByteString
+        getNameBytes() {
+            java.lang.Object ref = name_;
+            if (ref instanceof String) {
+                com.google.protobuf.ByteString b =
+                        com.google.protobuf.ByteString.copyFromUtf8(
+                                (java.lang.String) ref);
+                name_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        /**
+         * <code>string name = 1;</code>
+         *
+         * @param value The name to set.
+         * @return This builder for chaining.
+         */
+        public Builder setName(
+                java.lang.String value) {
+            if (value == null) {
+                throw new NullPointerException();
+            }
+            name_ = value;
+            bitField0_ |= 0x00000001;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <code>string name = 1;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearName() {
+            name_ = getDefaultInstance().getName();
+            bitField0_ = (bitField0_ & ~0x00000001);
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <code>string name = 1;</code>
+         *
+         * @param value The bytes for name to set.
+         * @return This builder for chaining.
+         */
+        public Builder setNameBytes(
+                com.google.protobuf.ByteString value) {
+            if (value == null) {
+                throw new NullPointerException();
+            }
+            checkByteStringIsUtf8(value);
+            name_ = value;
+            bitField0_ |= 0x00000001;
+            onChanged();
+            return this;
+        }
+
+        private int num_;
+
+        /**
+         * <code>int32 num = 2;</code>
+         *
+         * @return The num.
+         */
+        @java.lang.Override
+        public int getNum() {
+            return num_;
+        }
+
+        /**
+         * <code>int32 num = 2;</code>
+         *
+         * @param value The num to set.
+         * @return This builder for chaining.
+         */
+        public Builder setNum(int value) {
+
+            num_ = value;
+            bitField0_ |= 0x00000002;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <code>int32 num = 2;</code>
+         *
+         * @return This builder for chaining.
+         */
+        public Builder clearNum() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            num_ = 0;
+            onChanged();
+            return this;
+        }
+
+        private com.linfp.elephant.grpc.HelloParam param_;
+        private com.google.protobuf.SingleFieldBuilder<
+                com.linfp.elephant.grpc.HelloParam, com.linfp.elephant.grpc.HelloParam.Builder, com.linfp.elephant.grpc.HelloParamOrBuilder> paramBuilder_;
+
+        /**
+         * <code>.hello.HelloParam param = 3;</code>
+         *
+         * @return Whether the param field is set.
+         */
+        public boolean hasParam() {
+            return ((bitField0_ & 0x00000004) != 0);
+        }
+
+        /**
+         * <code>.hello.HelloParam param = 3;</code>
+         *
+         * @return The param.
+         */
+        public com.linfp.elephant.grpc.HelloParam getParam() {
+            if (paramBuilder_ == null) {
+                return param_ == null ? com.linfp.elephant.grpc.HelloParam.getDefaultInstance() : param_;
+            } else {
+                return paramBuilder_.getMessage();
+            }
+        }
+
+        /**
+         * <code>.hello.HelloParam param = 3;</code>
+         */
+        public Builder setParam(com.linfp.elephant.grpc.HelloParam value) {
+            if (paramBuilder_ == null) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                param_ = value;
+            } else {
+                paramBuilder_.setMessage(value);
+            }
+            bitField0_ |= 0x00000004;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <code>.hello.HelloParam param = 3;</code>
+         */
+        public Builder setParam(
+                com.linfp.elephant.grpc.HelloParam.Builder builderForValue) {
+            if (paramBuilder_ == null) {
+                param_ = builderForValue.build();
+            } else {
+                paramBuilder_.setMessage(builderForValue.build());
+            }
+            bitField0_ |= 0x00000004;
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <code>.hello.HelloParam param = 3;</code>
+         */
+        public Builder mergeParam(com.linfp.elephant.grpc.HelloParam value) {
+            if (paramBuilder_ == null) {
+                if (((bitField0_ & 0x00000004) != 0) &&
+                        param_ != null &&
+                        param_ != com.linfp.elephant.grpc.HelloParam.getDefaultInstance()) {
+                    getParamBuilder().mergeFrom(value);
+                } else {
+                    param_ = value;
+                }
+            } else {
+                paramBuilder_.mergeFrom(value);
+            }
+            if (param_ != null) {
+                bitField0_ |= 0x00000004;
+                onChanged();
+            }
+            return this;
+        }
+
+        /**
+         * <code>.hello.HelloParam param = 3;</code>
+         */
+        public Builder clearParam() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            param_ = null;
+            if (paramBuilder_ != null) {
+                paramBuilder_.dispose();
+                paramBuilder_ = null;
+            }
+            onChanged();
+            return this;
+        }
+
+        /**
+         * <code>.hello.HelloParam param = 3;</code>
+         */
+        public com.linfp.elephant.grpc.HelloParam.Builder getParamBuilder() {
+            bitField0_ |= 0x00000004;
+            onChanged();
+            return getParamFieldBuilder().getBuilder();
+        }
+
+        /**
+         * <code>.hello.HelloParam param = 3;</code>
+         */
+        public com.linfp.elephant.grpc.HelloParamOrBuilder getParamOrBuilder() {
+            if (paramBuilder_ != null) {
+                return paramBuilder_.getMessageOrBuilder();
+            } else {
+                return param_ == null ?
+                        com.linfp.elephant.grpc.HelloParam.getDefaultInstance() : param_;
+            }
+        }
+
+        /**
+         * <code>.hello.HelloParam param = 3;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilder<
+                com.linfp.elephant.grpc.HelloParam, com.linfp.elephant.grpc.HelloParam.Builder, com.linfp.elephant.grpc.HelloParamOrBuilder>
+        getParamFieldBuilder() {
+            if (paramBuilder_ == null) {
+                paramBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+                        com.linfp.elephant.grpc.HelloParam, com.linfp.elephant.grpc.HelloParam.Builder, com.linfp.elephant.grpc.HelloParamOrBuilder>(
+                        getParam(),
+                        getParentForChildren(),
+                        isClean());
+                param_ = null;
+            }
+            return paramBuilder_;
+        }
+
+        // @@protoc_insertion_point(builder_scope:hello.HelloRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:hello.HelloRequest)
+    private static final com.linfp.elephant.grpc.HelloRequest DEFAULT_INSTANCE;
+
+    static {
+        DEFAULT_INSTANCE = new com.linfp.elephant.grpc.HelloRequest();
+    }
+
+    public static com.linfp.elephant.grpc.HelloRequest getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<HelloRequest>
+            PARSER = new com.google.protobuf.AbstractParser<HelloRequest>() {
+        @java.lang.Override
+        public HelloRequest parsePartialFrom(
+                com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            Builder builder = newBuilder();
+            try {
+                builder.mergeFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.setUnfinishedMessage(builder.buildPartial());
+            } catch (com.google.protobuf.UninitializedMessageException e) {
+                throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+            } catch (java.io.IOException e) {
+                throw new com.google.protobuf.InvalidProtocolBufferException(e)
+                        .setUnfinishedMessage(builder.buildPartial());
+            }
+            return builder.buildPartial();
+        }
+    };
+
+    public static com.google.protobuf.Parser<HelloRequest> parser() {
+        return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HelloRequest> getParserForType() {
+        return PARSER;
+    }
+
+    @java.lang.Override
+    public com.linfp.elephant.grpc.HelloRequest getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+    }
 
 }
 

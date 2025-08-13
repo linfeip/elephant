@@ -1,10 +1,7 @@
 package com.linfp.elephant.api;
 
-import lombok.Data;
-
-@Data
 public class TestPostRequest {
-    private String name;
+    public String name;
 
-    private Integer age;
+    public Integer age;
 }

@@ -3,7 +3,8 @@ package com.linfp.elephant.controller;
 import com.linfp.elephant.api.StatResponse;
 import io.micrometer.core.instrument.distribution.HistogramSnapshot;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +14,9 @@ import java.util.concurrent.TimeUnit;
 
 
 @RestController
-@Slf4j
 public class MetricsController {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(MetricsController.class);
 
     private final PrometheusMeterRegistry meterRegistry;
 
@@ -49,15 +51,15 @@ public class MetricsController {
             var avg = Duration.ofNanos((long) timer.mean(TimeUnit.NANOSECONDS));
 
             var item = new StatResponse.StatItem();
-            item.setName(comment);
-            item.setP50(p50.toString());
-            item.setP90(p90.toString());
-            item.setP99(p99.toString());
-            item.setCount(count);
-            item.setAvg(avg.toString());
-            item.setQps(0);
+            item.name = comment;
+            item.p50 = p50.toString();
+            item.p90 = p90.toString();
+            item.p99 = p99.toString();
+            item.count = count;
+            item.avg = avg.toString();
+            item.qps = 0;
 
-            rsp.getItems().add(item);
+            rsp.items.add(item);
         }
 
         return rsp;

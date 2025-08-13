@@ -50,15 +50,15 @@ public class RunnerController {
     public String grpcCall(@Validated @RequestBody GrpcCallRequest req) {
         var dynamicProto = new DynamicProto();
         // 动态解析gRPC proto文件
-        for (String proto : req.getProtos()) {
+        for (String proto : req.protos) {
             dynamicProto.register(new ByteArrayInputStream(proto.getBytes()));
         }
 
         try {
-            Map<String, Object> params = om.readValue(req.getBody(), new TypeReference<>() {
+            Map<String, Object> params = om.readValue(req.body, new TypeReference<>() {
             });
 
-            var fullMethod = req.getService() + "/" + req.getMethod();
+            var fullMethod = req.service + "/" + req.method;
 
             var inArgs = dynamicProto.makeInMessage(fullMethod, params);
 
@@ -76,7 +76,7 @@ public class RunnerController {
                     .build();
 
             var channel = ManagedChannelBuilder
-                    .forTarget(req.getAddr())
+                    .forTarget(req.addr)
                     .usePlaintext()
                     .build();
 

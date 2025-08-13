@@ -2,7 +2,6 @@ package com.linfp.elephant.metrics;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
-import lombok.Data;
 
 import java.time.Duration;
 
@@ -57,19 +56,18 @@ public class Metrics {
         }
     }
 
-    @Data
     public static class Result {
 
-        private String runId;
+        public String runId;
 
-        private int code;
+        public int code;
 
-        private String error;
+        public String error;
 
-        private Duration elapsed;
+        public Duration elapsed;
 
-        private String name;
+        public String name;
 
-        private String comment;
+        public String comment;
     }
 }
