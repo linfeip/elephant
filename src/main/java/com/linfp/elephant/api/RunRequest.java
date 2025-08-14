@@ -19,6 +19,9 @@ public class RunRequest {
 
     public List<String> protos;
 
+    // 循环执行次数, 如果 = -1 就是无线循环执行
+    public int loop;
+
     public static class Action {
         public String action;
 

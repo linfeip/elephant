@@ -4,7 +4,7 @@ import com.linfp.elephant.api.RunRequest;
 import com.linfp.elephant.converter.Converter;
 import com.linfp.elephant.metrics.Metrics;
 import com.linfp.elephant.protocol.DynamicProto;
-import io.grpc.Channel;
+import io.grpc.ManagedChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +26,10 @@ public class LocalRunner implements IRunner {
 
     private final String runId;
 
-    private final Map<String, Channel> grpcChannels = new HashMap<>();
+    private final Map<String, ManagedChannel> grpcChannels = new HashMap<>();
     private final ReentrantReadWriteLock locker = new ReentrantReadWriteLock();
+
+    private int loop;
 
     public LocalRunner(Map<String, Function<ActionData, IAction>> actionFactory, Metrics metrics) {
         this.actionFactory = actionFactory;
@@ -38,6 +40,11 @@ public class LocalRunner implements IRunner {
     @Override
     public void run(RunRequest config) {
         logger.info("starting run");
+
+        loop = config.loop;
+        if (config.loop == 0) {
+            loop = 1;
+        }
 
         var dynamicProto = new DynamicProto();
         if (config.protos != null) {
@@ -85,12 +92,25 @@ public class LocalRunner implements IRunner {
 
         var elapsed = System.nanoTime() - start;
         logger.info("finished run elapsed time: {}", Duration.ofNanos(elapsed));
+
+        clear();
     }
 
     @Override
     public void stop() {
         for (var t : robots) {
             t.shutdown();
+        }
+        clear();
+    }
+
+    private void clear() {
+        locker.writeLock().lock();
+        try {
+            grpcChannels.values().forEach(ManagedChannel::shutdown);
+            grpcChannels.clear();
+        } finally {
+            locker.writeLock().unlock();
         }
 
         Thread.startVirtualThread(() -> {
@@ -112,7 +132,7 @@ public class LocalRunner implements IRunner {
         return metrics;
     }
 
-    public Channel getChannel(String addr) {
+    public ManagedChannel getChannel(String addr) {
         locker.readLock().lock();
         try {
             return grpcChannels.get(addr);
@@ -121,12 +141,16 @@ public class LocalRunner implements IRunner {
         }
     }
 
-    public void setChannel(String addr, Channel channel) {
+    public void setChannel(String addr, ManagedChannel channel) {
         locker.writeLock().lock();
         try {
             grpcChannels.putIfAbsent(addr, channel);
         } finally {
             locker.writeLock().unlock();
         }
+    }
+
+    public int getLoop() {
+        return loop;
     }
 }

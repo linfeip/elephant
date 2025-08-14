@@ -20,6 +20,6 @@ public class StatResponse {
 
         public String avg;
 
-        public Integer qps;
+        public Double qps;
     }
 }

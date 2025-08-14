@@ -4,6 +4,7 @@ import com.linfp.elephant.protocol.DynamicProto;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -48,15 +49,20 @@ public class Robot {
     public void doLoop(List<IAction> actions) {
         th = Thread.startVirtualThread(() -> {
             try {
-                for (var action : actions) {
-                    for (var i = 0; i < action.getData().loop; i++) {
-                        var result = action.doAction(this);
-                        result.runId = runner.runId();
-                        runner.getMetrics().update(result);
+                var loop = runner.getLoop();
+                var infinity = loop <= -1;
+                for (; loop > 0 || infinity; ) {
+                    for (var action : actions) {
+                        for (var i = 0; i < action.getData().loop; i++) {
+                            var result = action.doAction(this);
+                            result.runId = runner.runId();
+                            runner.getMetrics().update(result);
+                        }
                     }
+                    loop--;
                 }
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            } catch (InterruptedException | CancellationException e) {
+                // ignore
             } finally {
                 latch.countDown();
             }

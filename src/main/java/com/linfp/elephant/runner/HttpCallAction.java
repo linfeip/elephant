@@ -5,30 +5,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.linfp.elephant.metrics.Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Map;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.CancellationException;
 
 public class HttpCallAction implements IAction {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HttpCallAction.class);
 
-    private static final HttpClient CLIENT = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(30)).build();
-    private static final Semaphore LIMITER = new Semaphore(1000);
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(15);
-
     private final HttpArgs httpArgs;
 
     private final ActionData data;
 
-    public HttpCallAction(ActionData data, ObjectMapper om) {
+    private final RestTemplate restTemplate;
+
+    public HttpCallAction(ActionData data, ObjectMapper om, RestTemplate restTemplate) {
         this.data = data;
+        this.restTemplate = restTemplate;
         try {
             this.httpArgs = om.readValue(data.data, HttpArgs.class);
         } catch (Exception e) {
@@ -42,8 +41,6 @@ public class HttpCallAction implements IAction {
             Thread.sleep(data.delay);
         }
 
-        LIMITER.acquire();
-
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("starting http.call: {}", this.httpArgs);
         }
@@ -51,33 +48,23 @@ public class HttpCallAction implements IAction {
         var result = new Metrics.Result();
         var start = System.nanoTime();
         try {
-            var builder = HttpRequest.newBuilder();
-            if (httpArgs.headers != null) {
-                for (var kv : httpArgs.headers.entrySet()) {
-                    builder.headers(kv.getKey(), kv.getValue());
+            HttpEntity<?> ent = null;
+            if (httpArgs.body != null || httpArgs.headers != null) {
+                Object body = httpArgs.body;
+                HttpHeaders headers = null;
+                if (httpArgs.headers != null && !httpArgs.headers.isEmpty()) {
+                    headers = new HttpHeaders();
+                    for (var entry : httpArgs.headers.entrySet()) {
+                        headers.add(entry.getKey(), entry.getValue());
+                    }
                 }
+                ent = new HttpEntity<>(body, headers);
             }
-
-            HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.noBody();
-            if (httpArgs.body != null && !httpArgs.body.isEmpty()) {
-                bodyPublisher = HttpRequest.BodyPublishers.ofString(httpArgs.body);
-                builder.header("Content-Type", "application/json");
+            var resp = restTemplate.exchange(httpArgs.url, HttpMethod.valueOf(httpArgs.method.toUpperCase()), ent, String.class);
+            if (resp.getStatusCode() != HttpStatus.OK) {
+                throw new RuntimeException("http call failed: " + resp.getStatusCode());
             }
-
-            builder.method(httpArgs.method, bodyPublisher);
-            builder.uri(new URI(httpArgs.url));
-            var timeout = DEFAULT_TIMEOUT;
-            if (data.timeout != null && !data.timeout.isZero()) {
-                timeout = data.timeout;
-            }
-            builder.timeout(timeout);
-            var req = builder.build();
-            var resp = CLIENT.send(req, HttpResponse.BodyHandlers.ofString());
-
-            if (resp.statusCode() != HttpStatus.OK.value()) {
-                throw new RuntimeException("HTTP action failed: " + resp.statusCode());
-            }
-        } catch (InterruptedException e) {
+        } catch (CancellationException e) {
             throw e;
         } catch (Exception e) {
             result.code = 1;
@@ -87,7 +74,6 @@ public class HttpCallAction implements IAction {
             result.elapsed = Duration.ofNanos(elapsed);
             result.name = "http.call";
             result.comment = data.comment;
-            LIMITER.release();
 
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("finished http.call result: {}", result);
