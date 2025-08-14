@@ -53,7 +53,7 @@ public class Metrics {
                 .tag("runId", result.runId)
                 .tag("comment", result.comment)
                 .register(registry)
-                .record(result.elapsed);
+                .record(Duration.ofNanos(result.elapsed()));
         // 写入自定义的ActionMetricsManager指标收集
         metricsManager.update(result);
     }
@@ -79,11 +79,17 @@ public class Metrics {
 
         public String error;
 
-        public Duration elapsed;
+        public long start = System.nanoTime();
+
+        public long end;
 
         public String name;
 
         public String comment;
+
+        public long elapsed() {
+            return end - start;
+        }
     }
 
     public static class ActionMetrics {
@@ -106,6 +112,9 @@ public class Metrics {
                 return 0.0;
             }
             var cost = lastTime - startTime;
+            if (cost <= 0) {
+                return 0.0;
+            }
             return (double) Duration.ofSeconds(1).toNanos() / (double) (cost / count.get());
         }
     }
@@ -127,15 +136,17 @@ public class Metrics {
                     am = new ActionMetrics();
                     am.runId = result.runId;
                     am.comment = result.comment;
-                    am.startTime = System.nanoTime();
+                    am.startTime = result.start;
                     metrics.put(key, am);
                 }
                 locker.writeLock().unlock();
             }
 
             am.count.incrementAndGet();
-            am.totalElapsed.addAndGet(result.elapsed.toNanos());
-            am.lastTime = System.nanoTime();
+            am.totalElapsed.addAndGet(result.elapsed());
+            if (result.end > 0) {
+                am.lastTime = result.end;
+            }
         }
 
         public List<ActionMetrics> find(String runId) {

@@ -11,7 +11,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
 
@@ -46,7 +45,6 @@ public class HttpCallAction implements IAction {
         }
 
         var result = new Metrics.Result();
-        var start = System.nanoTime();
         try {
             HttpEntity<?> ent = null;
             if (httpArgs.body != null || httpArgs.headers != null) {
@@ -70,8 +68,7 @@ public class HttpCallAction implements IAction {
             result.code = 1;
             result.error = e.getMessage();
         } finally {
-            var elapsed = System.nanoTime() - start;
-            result.elapsed = Duration.ofNanos(elapsed);
+            result.end = System.nanoTime();
             result.name = "http.call";
             result.comment = data.comment;
 

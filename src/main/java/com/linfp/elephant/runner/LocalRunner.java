@@ -115,7 +115,7 @@ public class LocalRunner implements IRunner {
 
         Thread.startVirtualThread(() -> {
             try {
-                Thread.sleep(Duration.ofMinutes(30));
+                Thread.sleep(Duration.ofMinutes(1));
             } catch (InterruptedException e) {
                 //ignore
             }
