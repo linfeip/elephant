@@ -33,8 +33,8 @@ public class AutoConfiguration {
     private Server server;
 
     @Bean("http.call")
-    public Function<ActionData, IAction> httpCallAction(ObjectMapper om, RestTemplate restTemplate) {
-        return data -> new HttpCallAction(data, om, restTemplate);
+    public Function<ActionData, IAction> httpCallAction(ObjectMapper om, CloseableHttpClient httpClient) {
+        return data -> new HttpCallAction(data, om, httpClient);
     }
 
     @Bean("grpc.call")

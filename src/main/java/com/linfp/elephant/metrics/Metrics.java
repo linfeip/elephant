@@ -90,6 +90,10 @@ public class Metrics {
         public long elapsed() {
             return end - start;
         }
+
+        public boolean isSuccessful() {
+            return code == 0;
+        }
     }
 
     public static class ActionMetrics {
@@ -99,6 +103,7 @@ public class Metrics {
         public long lastTime;
         public AtomicLong count = new AtomicLong();
         public AtomicLong totalElapsed = new AtomicLong();
+        public AtomicLong errCount = new AtomicLong();
 
         public Duration avg() {
             if (count.get() == 0) {
@@ -146,6 +151,10 @@ public class Metrics {
             am.totalElapsed.addAndGet(result.elapsed());
             if (result.end > 0) {
                 am.lastTime = result.end;
+            }
+
+            if (!result.isSuccessful()) {
+                am.errCount.incrementAndGet();
             }
         }
 

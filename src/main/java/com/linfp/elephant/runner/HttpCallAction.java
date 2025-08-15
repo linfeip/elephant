@@ -3,14 +3,18 @@ package com.linfp.elephant.runner;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.linfp.elephant.metrics.Metrics;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
 
@@ -22,11 +26,11 @@ public class HttpCallAction implements IAction {
 
     private final ActionData data;
 
-    private final RestTemplate restTemplate;
+    private final CloseableHttpClient httpClient;
 
-    public HttpCallAction(ActionData data, ObjectMapper om, RestTemplate restTemplate) {
+    public HttpCallAction(ActionData data, ObjectMapper om, CloseableHttpClient httpClient) {
         this.data = data;
-        this.restTemplate = restTemplate;
+        this.httpClient = httpClient;
         try {
             this.httpArgs = om.readValue(data.data, HttpArgs.class);
         } catch (Exception e) {
@@ -46,21 +50,19 @@ public class HttpCallAction implements IAction {
 
         var result = new Metrics.Result();
         try {
-            HttpEntity<?> ent = null;
-            if (httpArgs.body != null || httpArgs.headers != null) {
-                Object body = httpArgs.body;
-                HttpHeaders headers = null;
-                if (httpArgs.headers != null && !httpArgs.headers.isEmpty()) {
-                    headers = new HttpHeaders();
-                    for (var entry : httpArgs.headers.entrySet()) {
-                        headers.add(entry.getKey(), entry.getValue());
-                    }
-                }
-                ent = new HttpEntity<>(body, headers);
+            ClassicHttpRequest req = new HttpUriRequestBase(httpArgs.method.toUpperCase(), new URI(httpArgs.url));
+            if (httpArgs.body != null) {
+                req.setEntity(new StringEntity(httpArgs.body));
             }
-            var resp = restTemplate.exchange(httpArgs.url, HttpMethod.valueOf(httpArgs.method.toUpperCase()), ent, String.class);
-            if (resp.getStatusCode() != HttpStatus.OK) {
-                throw new RuntimeException("http call failed: " + resp.getStatusCode());
+            if (httpArgs.headers != null) {
+                for (var kv : httpArgs.headers.entrySet()) {
+                    req.addHeader(kv.getKey(), kv.getValue());
+                }
+            }
+            try (CloseableHttpResponse resp = httpClient.execute(req)) {
+                if (resp.getCode() != HttpStatus.OK.value()) {
+                    throw new RuntimeException("http call failed: " + resp.getCode());
+                }
             }
         } catch (CancellationException e) {
             throw e;

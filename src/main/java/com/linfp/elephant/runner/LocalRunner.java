@@ -5,6 +5,7 @@ import com.linfp.elephant.converter.Converter;
 import com.linfp.elephant.metrics.Metrics;
 import com.linfp.elephant.protocol.DynamicProto;
 import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -132,19 +133,28 @@ public class LocalRunner implements IRunner {
         return metrics;
     }
 
-    public ManagedChannel getChannel(String addr) {
+    public ManagedChannel getOrCreateChannel(String addr) {
         locker.readLock().lock();
-        try {
-            return grpcChannels.get(addr);
-        } finally {
-            locker.readLock().unlock();
+        var channel = grpcChannels.get(addr);
+        locker.readLock().unlock();
+        if (channel != null) {
+            return channel;
         }
-    }
 
-    public void setChannel(String addr, ManagedChannel channel) {
         locker.writeLock().lock();
         try {
-            grpcChannels.putIfAbsent(addr, channel);
+            var ss = addr.split(":", 2);
+            if (ss.length != 2) {
+                throw new RuntimeException("Invalid grpc address: " + addr);
+            }
+            var name = ss[0];
+            var port = Integer.parseInt(ss[1]);
+            channel = ManagedChannelBuilder
+                    .forAddress(name, port)
+                    .usePlaintext()
+                    .build();
+            grpcChannels.put(addr, channel);
+            return channel;
         } finally {
             locker.writeLock().unlock();
         }

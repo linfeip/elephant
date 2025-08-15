@@ -3,6 +3,7 @@ package com.linfp.elephant;
 import com.google.protobuf.DynamicMessage;
 import com.linfp.elephant.grpc.GreeterGrpc;
 import com.linfp.elephant.grpc.HelloRequest;
+import com.linfp.elephant.grpc.PingRequest;
 import com.linfp.elephant.protocol.DynamicProto;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.io.FileInputStream;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GreeterGrpcClientTests {
 
@@ -73,7 +75,7 @@ public class GreeterGrpcClientTests {
                 .build();
 
         var channel = ManagedChannelBuilder
-                .forTarget("localhost:50000")
+                .forTarget("localhost:8081")
                 .usePlaintext()
                 .build();
         try {
@@ -82,6 +84,33 @@ public class GreeterGrpcClientTests {
             System.out.println(resp);
         } finally {
             channel.shutdownNow();
+        }
+    }
+
+    @Test
+    public void testPureGrpcClient() throws Exception {
+        var channel = ManagedChannelBuilder.forAddress("localhost", 8081)
+                .usePlaintext()
+                .build();
+
+        var req = PingRequest.newBuilder().build();
+        var count = new AtomicInteger(0);
+        var threads = 1024;
+
+        for (var i = 0; i < threads; i++) {
+            Thread.startVirtualThread(() -> {
+                var stub = GreeterGrpc.newBlockingV2Stub(channel);
+                while (true) {
+                    var reply = stub.ping(req);
+                    count.getAndIncrement();
+                }
+            });
+        }
+
+        while (true) {
+            Thread.sleep(1_000);
+            System.out.println("QPS: " + count.get());
+            count.setRelease(0);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.linfp.elephant.runner;
 
 import com.linfp.elephant.protocol.DynamicProto;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
@@ -21,6 +22,8 @@ public class Robot {
     private final LocalRunner runner;
 
     private final CountDownLatch latch;
+
+    private boolean isRunning;
 
     public Robot(LocalRunner runner, CountDownLatch latch) {
         this.runner = runner;
@@ -51,12 +54,14 @@ public class Robot {
             try {
                 var loop = runner.getLoop();
                 var infinity = loop <= -1;
-                for (; loop > 0 || infinity; ) {
+                while (loop > 0 || infinity) {
                     for (var action : actions) {
                         for (var i = 0; i < action.getData().loop; i++) {
                             var result = action.doAction(this);
                             result.runId = runner.runId();
                             runner.getMetrics().update(result);
+                            // 释放协程CPU, 防止过忙
+                            Thread.sleep(Duration.ZERO);
                         }
                     }
                     loop--;

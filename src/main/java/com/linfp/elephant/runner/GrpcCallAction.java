@@ -5,12 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.DynamicMessage;
 import com.linfp.elephant.metrics.Metrics;
 import io.grpc.CallOptions;
-import io.grpc.ManagedChannelBuilder;
 import io.grpc.MethodDescriptor;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import io.grpc.protobuf.ProtoUtils;
 import io.grpc.stub.ClientCalls;
 
-import java.time.Duration;
 import java.util.Map;
 
 public class GrpcCallAction implements IAction {
@@ -57,24 +57,16 @@ public class GrpcCallAction implements IAction {
                             DynamicMessage.getDefaultInstance(outDesc)))
                     .build();
 
-            var channel = robot.getRunner().getChannel(grpcArgs.addr);
-            if (channel == null) {
-                var ss = grpcArgs.addr.split(":", 2);
-                if (ss.length != 2) {
-                    throw new RuntimeException("Invalid grpc address: " + grpcArgs.addr);
-                }
-                var name = ss[0];
-                var port = Integer.parseInt(ss[1]);
-                channel = ManagedChannelBuilder
-                        .forAddress(name, port)
-                        .usePlaintext()
-                        .build();
-                robot.getRunner().setChannel(grpcArgs.addr, channel);
-            }
-
+            var channel = robot.getRunner().getOrCreateChannel(grpcArgs.addr);
             var resp = ClientCalls.blockingUnaryCall(
                     channel, method, CallOptions.DEFAULT, inArgs);
 
+        } catch (StatusRuntimeException e) {
+            if (e.getStatus().getCode() == Status.Code.CANCELLED) {
+                throw new InterruptedException(e.getMessage());
+            }
+            result.code = 1;
+            result.error = e.getMessage();
         } catch (Exception e) {
             result.code = 1;
             result.error = e.getMessage();

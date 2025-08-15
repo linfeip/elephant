@@ -18,6 +18,10 @@ public class StatResponse {
 
         public Long count;
 
+        public Long errCount;
+
+        public Long succCount;
+
         public String avg;
 
         public Double qps;

@@ -29,12 +29,18 @@ public class MetricsController {
     public StatResponse stats(@PathVariable String runId) {
         var rsp = new StatResponse();
         var actionMetrics = metrics.getMetricsManager().find(runId);
-        for(var m : actionMetrics) {
+        for (var m : actionMetrics) {
+            var errCount = m.errCount.get();
             var item = new StatResponse.StatItem();
             item.name = m.comment;
             item.count = m.count.get();
+            item.errCount = errCount;
             item.avg = m.avg().toString();
             item.qps = m.tps();
+            if (item.errCount > item.count) {
+                item.errCount = item.count;
+            }
+            item.succCount = item.count - item.errCount;
 
             rsp.items.add(item);
         }
