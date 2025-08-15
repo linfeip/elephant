@@ -23,8 +23,6 @@ public class Robot {
 
     private final CountDownLatch latch;
 
-    private boolean isRunning;
-
     public Robot(LocalRunner runner, CountDownLatch latch) {
         this.runner = runner;
         this.latch = latch;
@@ -88,5 +86,13 @@ public class Robot {
 
     public LocalRunner getRunner() {
         return runner;
+    }
+
+    public ParserManager getParserManager() {
+        return runner.getParserManager();
+    }
+
+    public Map<String, Object> getData() {
+        return data;
     }
 }

@@ -29,6 +29,7 @@ public class LocalRunner implements IRunner {
 
     private final Map<String, ManagedChannel> grpcChannels = new HashMap<>();
     private final ReentrantReadWriteLock locker = new ReentrantReadWriteLock();
+    private final ParserManager parserManager = new ParserManager();
 
     private int loop;
 
@@ -143,6 +144,11 @@ public class LocalRunner implements IRunner {
 
         locker.writeLock().lock();
         try {
+            // double check
+            channel = grpcChannels.get(addr);
+            if (channel != null) {
+                return channel;
+            }
             var ss = addr.split(":", 2);
             if (ss.length != 2) {
                 throw new RuntimeException("Invalid grpc address: " + addr);
@@ -162,5 +168,9 @@ public class LocalRunner implements IRunner {
 
     public int getLoop() {
         return loop;
+    }
+
+    public ParserManager getParserManager() {
+        return parserManager;
     }
 }

@@ -31,6 +31,12 @@ clone项目, 运行, 打开http://localhost:8080 就可以看到压测前端界�
 
 ![HTTP](http.png)
 
+## 动态解析
+
+可以把上一个HTTP请求的响应JSON结果, 使用SpringEL模版语言解析到#{resp.xxx}动态解析到下一个入参中, 如图:
+
+![spel.png](spel.png)
+
 ## 压测指标
 
 ![Metrics](metrics.png)
